@@ -1,0 +1,113 @@
+{
+  "model_id": "eos0bbb",
+  "title": "Permeability and Efflux Prediction (GNN-MTL)",
+  "timestamp": "2026-02-20",
+  "overall_status": "passed",
+  "summary": {
+    "total_checks": 9,
+    "passed": 8,
+    "warnings": 1,
+    "failed": 0
+  },
+  "inspect_checks": {
+    "metadata_valid": {
+      "status": "passed",
+      "detail": "All required fields present; Identifier, Slug, Title, Description, Task, Input, Output, Tags, Publication, License"
+    },
+    "files_exist": {
+      "status": "passed",
+      "detail": "main.py, run.sh, run_input.csv, run_output.csv, run_columns.csv, install.yml, metadata.yml, model.pt checkpoint"
+    },
+    "columns_match_output": {
+      "status": "passed",
+      "detail": "run_columns.csv defines 4 columns (caco2_er, caco2_papp, mdck_er, nih_mdck_er) matching run_output.csv header"
+    },
+    "dependencies_pinned": {
+      "status": "passed",
+      "detail": "install.yml pins chemprop==2.1.0 (which brings torch, lightning, rdkit as transitive deps)"
+    }
+  },
+  "shallow_checks": {
+    "example_run": {
+      "status": "passed",
+      "detail": "5 input SMILES → 5 rows × 4 columns output, all finite values"
+    },
+    "consistency": {
+      "status": "passed",
+      "detail": "Dual run produces byte-identical output"
+    }
+  },
+  "deep_checks": {
+    "distribution_analysis": {
+      "status": "passed",
+      "num_input_molecules": 50,
+      "num_valid_outputs": 50,
+      "completion_rate": 1.0,
+      "runtime_seconds": 4.5,
+      "columns": {
+        "caco2_er": {
+          "mean": -0.6338,
+          "std": 2.3632,
+          "min": -8.5444,
+          "max": 5.0779,
+          "cv": 3.73,
+          "skew": -1.55,
+          "is_constant": false,
+          "status": "passed"
+        },
+        "caco2_papp": {
+          "mean": 0.6250,
+          "std": 2.0787,
+          "min": -7.9081,
+          "max": 3.3042,
+          "cv": 3.33,
+          "skew": -2.36,
+          "is_constant": false,
+          "status": "passed"
+        },
+        "mdck_er": {
+          "mean": -1.1660,
+          "std": 2.4983,
+          "min": -11.1187,
+          "max": 3.5936,
+          "cv": 2.14,
+          "skew": -1.85,
+          "is_constant": false,
+          "status": "passed"
+        },
+        "nih_mdck_er": {
+          "mean": -1.9723,
+          "std": 2.7800,
+          "min": -11.1978,
+          "max": 1.5574,
+          "cv": 1.41,
+          "skew": -1.33,
+          "is_constant": false,
+          "status": "passed"
+        }
+      }
+    },
+    "sanity_checks": {
+      "status": "passed",
+      "matched_categories": ["permeability"],
+      "checks": [
+        {
+          "category": "permeability",
+          "column": "caco2_papp",
+          "direction": "high",
+          "positive_set": "ibuprofen, acetaminophen, aspirin, diazepam, sildenafil, benzene",
+          "negative_set": "citric acid, mannitol, glutamic acid, tyrosine",
+          "positive_mean": 1.2666,
+          "negative_mean": -0.4384,
+          "separation": 1.705,
+          "separation_correct": true,
+          "status": "passed"
+        }
+      ]
+    },
+    "paper_reproduction": {
+      "status": "skipped",
+      "detail": "Paper (ACS Omega 2025, 10(45), 54148-54159) is paywalled. Zenodo record contains only model.pt with no test data or reported metrics. Cannot reproduce specific RMSE values."
+    }
+  }
+}
